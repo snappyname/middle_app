@@ -17,6 +17,6 @@ public class HumidityController : ControllerBase
     [HttpGet]
     public Task<IActionResult> GetHumidity()
     {
-        return Task.FromResult<IActionResult>(Ok( _humidityService.GetHumidity()));
+        return Task.FromResult<IActionResult>(Ok(_humidityService.GetHumidity()));
     }
 }

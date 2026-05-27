@@ -18,8 +18,8 @@ public static class ServiceCollectionExtensions
             services.AddScoped<IDoorService, DoorService>();
             services.AddSingleton<IDoorRepository, DoorRepository>();
             return services;
-        }  
-        
+        }
+
         public IServiceCollection AddValidators()
         {
             services.AddControllers(options =>
@@ -27,6 +27,6 @@ public static class ServiceCollectionExtensions
                 options.Filters.Add<ValidationFilter<SetDoorStatusDTO>>();
             });
             return services;
-        }    
+        }
     }
 }

@@ -17,8 +17,7 @@ public class DoorService : IDoorService
     {
         return new DoorStatusDTO
         {
-            Status = await _doorRepository.GetDoorStatus(),
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            Status = await _doorRepository.GetDoorStatus(), Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
         };
     }
 

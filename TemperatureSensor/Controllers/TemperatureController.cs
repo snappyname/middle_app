@@ -17,6 +17,6 @@ public class TemperatureController : ControllerBase
     [HttpGet]
     public Task<IActionResult> GetTemperature()
     {
-        return Task.FromResult<IActionResult>(Ok( _temperatureService.GetTemperature()));
+        return Task.FromResult<IActionResult>(Ok(_temperatureService.GetTemperature()));
     }
 }

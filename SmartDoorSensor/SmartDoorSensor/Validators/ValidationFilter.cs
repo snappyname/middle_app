@@ -26,8 +26,7 @@ public class ValidationFilter<T> : IAsyncActionFilter where T : class
             var result = await _validator.ValidateAsync(argument);
             if (!result.IsValid)
             {
-                context.Result = new BadRequestObjectResult(
-                    result.Errors.Select(e => e.ErrorMessage));
+                context.Result = new BadRequestObjectResult(result.Errors.Select(e => e.ErrorMessage));
                 return;
             }
         }

@@ -10,9 +10,9 @@ public static class ApplicationBuilderExtensions
         app.Services.UseScheduler(scheduler =>
         {
             scheduler.ScheduleAsync(async () =>
-                {
-                    await app.Services.GetRequiredService<RandomWebhookJob>().Invoke();
-                }).EverySecond();
+            {
+                await app.Services.GetRequiredService<RandomWebhookJob>().Invoke();
+            }).EverySecond();
         });
     }
 }

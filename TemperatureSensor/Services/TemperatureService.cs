@@ -17,8 +17,7 @@ public class TemperatureService : ITemperatureService
     {
         return new TemperatureValueDTO
         {
-            Value = _random.Next(15, 32),
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            Value = _random.Next(15, 32), Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
         };
     }
 }
