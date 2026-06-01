@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SmartDoorSensor.Contracts\SmartDoorSensor.Contracts.csproj" />
+      <ProjectReference Include="..\SmartDoorSensor.Infrastructure\SmartDoorSensor.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

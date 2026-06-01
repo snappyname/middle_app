@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensor", "TemperatureSensor.csproj", "{D7DB3B2E-8A05-467B-BA78-4E9DE7271C3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensor.Api", "TemperatureSensor.Api\TemperatureSensor.Api.csproj", "{B6D4D70F-06AF-426C-B50D-3465D5DEC2FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensor.Contracts", "TemperatureSensor.Contracts\TemperatureSensor.Contracts.csproj", "{BBAA5B5F-77B5-4D89-9783-3A7A46CDDA4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensor.Application", "TemperatureSensor.Application\TemperatureSensor.Application.csproj", "{48FC3D10-FC3B-47B3-9AE2-A6D466AE92D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +12,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7DB3B2E-8A05-467B-BA78-4E9DE7271C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7DB3B2E-8A05-467B-BA78-4E9DE7271C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7DB3B2E-8A05-467B-BA78-4E9DE7271C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7DB3B2E-8A05-467B-BA78-4E9DE7271C3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D4D70F-06AF-426C-B50D-3465D5DEC2FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D4D70F-06AF-426C-B50D-3465D5DEC2FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D4D70F-06AF-426C-B50D-3465D5DEC2FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D4D70F-06AF-426C-B50D-3465D5DEC2FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBAA5B5F-77B5-4D89-9783-3A7A46CDDA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBAA5B5F-77B5-4D89-9783-3A7A46CDDA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBAA5B5F-77B5-4D89-9783-3A7A46CDDA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBAA5B5F-77B5-4D89-9783-3A7A46CDDA4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FC3D10-FC3B-47B3-9AE2-A6D466AE92D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FC3D10-FC3B-47B3-9AE2-A6D466AE92D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FC3D10-FC3B-47B3-9AE2-A6D466AE92D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FC3D10-FC3B-47B3-9AE2-A6D466AE92D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

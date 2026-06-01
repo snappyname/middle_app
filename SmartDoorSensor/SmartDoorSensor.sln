@@ -1,6 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor", "SmartDoorSensor\SmartDoorSensor.csproj", "{94F7901A-A501-4446-A6A8-C1DDF810C805}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor.Api", "SmartDoorSensor.Api\SmartDoorSensor.Api.csproj", "{94F7901A-A501-4446-A6A8-C1DDF810C805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor.Application", "SmartDoorSensor.Application\SmartDoorSensor.Application.csproj", "{315803C0-F9B2-412D-BD78-51F513C7D9DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor.Infrastructure", "SmartDoorSensor.Infrastructure\SmartDoorSensor.Infrastructure.csproj", "{CF3261B1-CA13-4A2C-987A-54B4A52DC838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor.Contracts", "SmartDoorSensor.Contracts\SmartDoorSensor.Contracts.csproj", "{1AEE1AFA-EDF7-426B-862A-FA98549CBCCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDoorSensor.Domain", "SmartDoorSensor.Domain\SmartDoorSensor.Domain.csproj", "{717A7A00-851C-4329-ADF7-CC80172C7490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +20,21 @@ Global
 		{94F7901A-A501-4446-A6A8-C1DDF810C805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94F7901A-A501-4446-A6A8-C1DDF810C805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94F7901A-A501-4446-A6A8-C1DDF810C805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315803C0-F9B2-412D-BD78-51F513C7D9DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315803C0-F9B2-412D-BD78-51F513C7D9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315803C0-F9B2-412D-BD78-51F513C7D9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315803C0-F9B2-412D-BD78-51F513C7D9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3261B1-CA13-4A2C-987A-54B4A52DC838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3261B1-CA13-4A2C-987A-54B4A52DC838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3261B1-CA13-4A2C-987A-54B4A52DC838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3261B1-CA13-4A2C-987A-54B4A52DC838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AEE1AFA-EDF7-426B-862A-FA98549CBCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AEE1AFA-EDF7-426B-862A-FA98549CBCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AEE1AFA-EDF7-426B-862A-FA98549CBCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AEE1AFA-EDF7-426B-862A-FA98549CBCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717A7A00-851C-4329-ADF7-CC80172C7490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717A7A00-851C-4329-ADF7-CC80172C7490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717A7A00-851C-4329-ADF7-CC80172C7490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717A7A00-851C-4329-ADF7-CC80172C7490}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

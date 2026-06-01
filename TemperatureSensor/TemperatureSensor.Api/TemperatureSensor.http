@@ -1,0 +1,6 @@
+@TemperatureSensor_HostAddress = http://localhost:5048
+
+GET {{TemperatureSensor_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
