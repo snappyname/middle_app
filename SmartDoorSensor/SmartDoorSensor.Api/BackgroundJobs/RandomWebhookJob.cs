@@ -4,22 +4,26 @@ namespace SmartDoorSensor.BackgroundJobs;
 
 public class RandomWebhookJob : IInvocable
 {
-    private readonly HttpClient _httpClient;
+    private HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<RandomWebhookJob> _logger;
     private readonly IConfiguration _configuration;
+    private const int EXPECTED_WEBHOOK_REQUEST_TIME = 5;
 
-    public RandomWebhookJob(IHttpClientFactory factory, ILogger<RandomWebhookJob> logger, IConfiguration configuration)
+    public RandomWebhookJob(ILogger<RandomWebhookJob> logger, IConfiguration configuration,
+        IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
         _configuration = configuration;
-        _httpClient = factory.CreateClient();
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task Invoke()
     {
         try
         {
-            if (Random.Shared.Next(0, 10) < 2)
+            _httpClient = _httpClientFactory.CreateClient();
+            if (Random.Shared.Next(0, EXPECTED_WEBHOOK_REQUEST_TIME) < 1)
             {
                 var url = _configuration["HubApiUrl"];
                 var response = await _httpClient.GetAsync(url);

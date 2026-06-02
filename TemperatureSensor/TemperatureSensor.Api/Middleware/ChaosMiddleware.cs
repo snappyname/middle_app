@@ -4,6 +4,7 @@ public class ChaosMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly Random _random = new();
+    private const int MAX_PERCENT = 100;
 
     public ChaosMiddleware(RequestDelegate next)
     {
@@ -12,7 +13,7 @@ public class ChaosMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        int roll = _random.Next(0, 100);
+        int roll = _random.Next(0, MAX_PERCENT);
         if (roll < 10)
         {
             context.Response.StatusCode = 500;
