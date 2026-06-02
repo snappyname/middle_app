@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iot_hub", "iot_hub\iot_hub.csproj", "{0FF17165-7A8A-4546-BA84-896B2C7C77DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{BD8E8A2E-22A8-4462-A258-01CDC2579CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D101BF7D-4186-44E8-B2A4-1CFEBA6EEE9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{DBDBC834-AEFA-4110-B67C-69DA0EEA35B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FF17165-7A8A-4546-BA84-896B2C7C77DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF17165-7A8A-4546-BA84-896B2C7C77DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF17165-7A8A-4546-BA84-896B2C7C77DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF17165-7A8A-4546-BA84-896B2C7C77DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD8E8A2E-22A8-4462-A258-01CDC2579CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD8E8A2E-22A8-4462-A258-01CDC2579CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD8E8A2E-22A8-4462-A258-01CDC2579CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD8E8A2E-22A8-4462-A258-01CDC2579CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D101BF7D-4186-44E8-B2A4-1CFEBA6EEE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D101BF7D-4186-44E8-B2A4-1CFEBA6EEE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D101BF7D-4186-44E8-B2A4-1CFEBA6EEE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D101BF7D-4186-44E8-B2A4-1CFEBA6EEE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBDBC834-AEFA-4110-B67C-69DA0EEA35B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBDBC834-AEFA-4110-B67C-69DA0EEA35B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBDBC834-AEFA-4110-B67C-69DA0EEA35B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBDBC834-AEFA-4110-B67C-69DA0EEA35B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
