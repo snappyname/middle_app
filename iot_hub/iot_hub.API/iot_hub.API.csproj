@@ -4,14 +4,17 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>iot_hub</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Coravel" Version="6.0.2" />
+      <PackageReference Include="Refit" Version="10.1.6" />
+      <PackageReference Include="Refit.HttpClientFactory" Version="10.1.6" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\iot_hub.Application\iot_hub.Application.csproj" />
     </ItemGroup>
 
 </Project>

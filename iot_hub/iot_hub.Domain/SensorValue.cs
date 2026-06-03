@@ -4,11 +4,11 @@ namespace Domain;
 
 public abstract class SensorValue
 {
-    public SensorType SensorType { get; init; }
-    public long Timestamp { get; init; }
+    public SensorType SensorType { get; set; }
+    public long Timestamp { get; set; }
 }
 
 public abstract class SensorValue<T> : SensorValue
 {
-    public T Value { get; init; } = default!;
+    public T Value { get; set; } = default!;
 }
