@@ -1,9 +1,10 @@
-﻿using Contracts.DTO.Input;
+﻿using Contracts.DTO;
+using Contracts.DTO.Input;
 using Refit;
 
 namespace Application.ApiClients.Abstractions
 {
-    public interface ISensorsClient
+    public interface IDoorSensorsClient
     {
         [Get("/SmartDoor")]
         Task<SmartDootInputStateDTO> GetDoorStatus();

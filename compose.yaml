@@ -3,6 +3,8 @@ services:
     build:
       context: ./HumiditySensor
       dockerfile: HumiditySensor.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:7080   
     ports:
       - "7080:7080"
 
@@ -10,6 +12,8 @@ services:
     build:
       context: ./TemperatureSensor
       dockerfile: TemperatureSensor.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:9080
     ports:
       - "9080:9080"
 

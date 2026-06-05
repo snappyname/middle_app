@@ -1,7 +1,8 @@
-﻿namespace Domain
+﻿using Domain.Enums;
+
+namespace Domain;
+
+public class HumidityValue : SensorValue<decimal>
 {
-    public class HumidityValue : SensorValue<int>
-    {
-        
-    }
+    public override SensorType SensorType => SensorType.Humidity;
 }

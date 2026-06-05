@@ -1,28 +1,30 @@
-﻿using Coravel.Invocable;
+﻿using Application.ApiClients.Abstractions;
+using Application.Services.Abstract;
+using Coravel.Invocable;
+using Domain;
+using Mapster;
+using System.Text.Json;
 
 namespace iot_hub.BackgroundJobs;
 
 public class GetTemperatureDataJob : IInvocable
 {
-    private readonly HttpClient _httpClient;
-    private readonly ILogger<GetTemperatureDataJob> _logger;
+    private readonly ITemperatureSensorClient _temperatureSensorsClient;
+    private readonly IKafkaService _kafkaService;
+    private readonly ILogger<GetHumidityDataJob> _logger;
 
-    public GetTemperatureDataJob(IHttpClientFactory factory, ILogger<GetTemperatureDataJob> logger)
+    public GetTemperatureDataJob(ITemperatureSensorClient temperatureSensorsClient, IKafkaService kafkaService, ILogger<GetHumidityDataJob> logger)
     {
-        _httpClient = factory.CreateClient();
+        _temperatureSensorsClient = temperatureSensorsClient;
+        _kafkaService = kafkaService;
         _logger = logger;
     }
 
     public async Task Invoke()
     {
-        try
-        {
-            //var response = await _httpClient.GetAsync("http://localhost:9080/api/Temperature");
-            //_logger.LogInformation($"GetTemperatureDataJob response: {await response.Content.ReadAsStringAsync()}");
-        }
-        catch
-        {
-            // ignored
-        }
+        var result = await _temperatureSensorsClient.GetTemperature();
+        _logger.LogInformation($"GetTemperatureDataJob result: {JsonSerializer.Serialize(result)}");
+        var sensorValue = result.Adapt<TemperatureValue>();
+        await _kafkaService.SendNewValue(sensorValue);
     }
 }

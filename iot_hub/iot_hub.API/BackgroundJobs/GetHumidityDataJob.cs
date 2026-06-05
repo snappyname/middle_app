@@ -1,28 +1,29 @@
-﻿using Coravel.Invocable;
-
+﻿using Application.ApiClients.Abstractions;
+using Application.Services.Abstract;
+using Coravel.Invocable;
+using Domain;
+using Mapster;
+using System.Text.Json;
 namespace iot_hub.BackgroundJobs;
 
 public class GetHumidityDataJob : IInvocable
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHumiditySensorClient _humiditySensorClient;
+    private readonly IKafkaService _kafkaService;
     private readonly ILogger<GetHumidityDataJob> _logger;
     
-    public GetHumidityDataJob(IHttpClientFactory factory, ILogger<GetHumidityDataJob> logger)
+    public GetHumidityDataJob(IKafkaService kafkaService, IHumiditySensorClient humiditySensorClient, ILogger<GetHumidityDataJob> logger)
     {
-        _httpClient = factory.CreateClient();
+        _kafkaService = kafkaService;
+        _humiditySensorClient = humiditySensorClient;
         _logger = logger;
     }
 
     public async Task Invoke()
     {
-        try
-        {
-            //var response = await _httpClient.GetAsync("http://localhost:7080/api/Humidity");
-            //_logger.LogInformation($"GetHumidityDataJob response: {await response.Content.ReadAsStringAsync()}");
-        }
-        catch
-        {
-            // ignored
-        }
+        var result = await _humiditySensorClient.GetHumidity();
+        _logger.LogInformation($"GetHumidityDataJob result: {JsonSerializer.Serialize(result)}");
+        var sensorValue = result.Adapt<HumidityValue>();
+        await _kafkaService.SendNewValue(sensorValue);
     }
 }
