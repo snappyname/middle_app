@@ -19,19 +19,19 @@ public static class ServiceCollectionExtensions
             return services;
         }
 
-        public IServiceCollection AddRefitServices()
+        public IServiceCollection AddRefitServices(IConfiguration configuration)
         {
             services
                 .AddRefitClient<IDoorSensorsClient>()
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:8080/api"));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["SensorsApi:SmartDoor"]!));
 
             services
                 .AddRefitClient<ITemperatureSensorClient>()
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:9080/api"));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["SensorsApi:Temperature"]!));
 
             services
                 .AddRefitClient<IHumiditySensorClient>()
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:7080/api"));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["SensorsApi:Humidity"]!));
             return services;
         }
     }

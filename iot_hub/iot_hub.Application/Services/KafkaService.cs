@@ -2,25 +2,27 @@
 using Confluent.Kafka;
 using Contracts.DTO;
 using Domain;
-using Domain.Enums;
 using Mapster;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services
 {
     public class KafkaService : IKafkaService
     {
         private readonly ILogger<KafkaService> _logger;
+        private readonly IConfiguration _configuration;
 
-        public KafkaService(ILogger<KafkaService> logger)
+        public KafkaService(ILogger<KafkaService> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public async Task SendNewValue<T>(SensorValue<T> value)
         {
-            var config = new ProducerConfig { BootstrapServers = "localhost:29092", Acks = Acks.All };
+            var config = new ProducerConfig { BootstrapServers = _configuration["KafkaUrl"]!, Acks = Acks.All };
 
             using var producer = new ProducerBuilder<string, string>(config).Build();
 

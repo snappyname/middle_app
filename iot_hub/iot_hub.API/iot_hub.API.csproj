@@ -5,16 +5,23 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>iot_hub</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Coravel" Version="6.0.2" />
-      <PackageReference Include="Refit" Version="10.1.6" />
-      <PackageReference Include="Refit.HttpClientFactory" Version="10.1.6" />
+      <PackageReference Include="Refit" Version="11.0.1" />
+      <PackageReference Include="Refit.HttpClientFactory" Version="11.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\iot_hub.Application\iot_hub.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
