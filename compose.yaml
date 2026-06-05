@@ -1,0 +1,21 @@
+services:
+  humiditysensor.api:
+    build:
+      context: ./HumiditySensor
+      dockerfile: HumiditySensor.API/Dockerfile
+    ports:
+      - "7080:7080"
+
+  temperaturesensor.api:
+    build:
+      context: ./TemperatureSensor
+      dockerfile: TemperatureSensor.Api/Dockerfile
+    ports:
+      - "9080:9080"
+
+  smartdoorsensor.api:
+    build:
+      context: ./SmartDoorSensor
+      dockerfile: SmartDoorSensor.Api/Dockerfile
+    ports:
+      - "8080:8080"

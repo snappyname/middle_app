@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>SmartDoorSensor</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Coravel" Version="6.0.2" />
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SmartDoorSensor.Application\SmartDoorSensor.Application.csproj" />
+      <ProjectReference Include="..\SmartDoorSensor.Contracts\SmartDoorSensor.Contracts.csproj" />
+      <ProjectReference Include="..\SmartDoorSensor.Infrastructure\SmartDoorSensor.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+</Project>

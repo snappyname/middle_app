@@ -1,0 +1,8 @@
+﻿services:
+  humiditysensor.api:
+    image: humiditysensor.api
+    build:
+      context: .
+      dockerfile: HumiditySensor.API/Dockerfile
+    ports:
+      - "7080:7080"
