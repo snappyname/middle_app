@@ -12,11 +12,29 @@ public class TemperatureService : ITemperatureService
         _random = new Random();
     }
 
-    public TemperatureValueDTO GetTemperature()
+    public List<TemperatureValueDTO> GetTemperature()
     {
-        return new TemperatureValueDTO
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return new List<TemperatureValueDTO>
         {
-            Value = _random.Next(15, 32), Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            new TemperatureValueDTO
+            {
+                SensorId = 0,
+                Value = _random.Next(15, 32),
+                Timestamp = timestamp
+            },
+            new TemperatureValueDTO
+            {
+                SensorId = 1,
+                Value = _random.Next(15, 32),
+                Timestamp = timestamp
+            },
+            new TemperatureValueDTO
+            {
+                SensorId = 2,
+                Value = _random.Next(15, 32),
+                Timestamp = timestamp
+            }
         };
     }
 }
