@@ -4,5 +4,5 @@ namespace Application.Services.Abstractions;
 
 public interface ITemperatureService
 {
-    TemperatureValueDTO GetTemperature();
+    List<TemperatureValueDTO> GetTemperature();
 }
