@@ -23,7 +23,7 @@ public class GetHumidityDataJob : IInvocable
     {
         var result = await _humiditySensorClient.GetHumidity();
         _logger.LogInformation($"GetHumidityDataJob result: {JsonSerializer.Serialize(result)}");
-        var sensorValue = result.Adapt<HumidityValue>();
-        await _kafkaService.SendNewValue(sensorValue);
+        var sensorsValue = result.Adapt<List<HumidityValue>>();
+        await _kafkaService.SendNewValueAsync(sensorsValue);
     }
 }

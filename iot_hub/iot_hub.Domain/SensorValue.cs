@@ -5,6 +5,7 @@ namespace Domain;
 public abstract class SensorValue
 {
     public abstract SensorType SensorType { get; }
+    public long SensorId { get; set; }
     public long Timestamp { get; set; }
 }
 

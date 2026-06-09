@@ -24,7 +24,7 @@ public class GetTemperatureDataJob : IInvocable
     {
         var result = await _temperatureSensorsClient.GetTemperature();
         _logger.LogInformation($"GetTemperatureDataJob result: {JsonSerializer.Serialize(result)}");
-        var sensorValue = result.Adapt<TemperatureValue>();
-        await _kafkaService.SendNewValue(sensorValue);
+        var sensorValue = result.Adapt<List<TemperatureValue>>();
+        await _kafkaService.SendNewValueAsync(sensorValue);
     }
 }

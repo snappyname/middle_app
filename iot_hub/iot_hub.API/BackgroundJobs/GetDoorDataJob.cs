@@ -24,6 +24,6 @@ public class GetDoorDataJob : IInvocable
         var result = await _doorSensorsClient.GetDoorStatus();
         _logger.LogInformation($"GetDoorDataJob result: {JsonSerializer.Serialize(result)}");
         var sensorValue = result.Adapt<SmartDoorValue>();
-        await _kafkaService.SendNewValue(sensorValue);
+        await _kafkaService.SendNewValueAsync(sensorValue);
     }
 }

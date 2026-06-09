@@ -4,6 +4,7 @@ namespace Application.Services.Abstract
 {
     public interface IKafkaService
     {
-        Task SendNewValue<T>(SensorValue<T> value);
+        Task SendNewValueAsync<T>(IEnumerable<SensorValue<T>> value);
+        Task SendNewValueAsync<T>(SensorValue<T> value);
     }
 }

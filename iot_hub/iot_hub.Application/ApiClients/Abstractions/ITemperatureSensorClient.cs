@@ -6,6 +6,6 @@ namespace Application.ApiClients.Abstractions
     public interface ITemperatureSensorClient
     {
         [Get("/Temperature")]
-        Task<TemperatureStatusInputDTO> GetTemperature();
+        Task<List<TemperatureStatusInputDTO>> GetTemperature();
     }
 }
