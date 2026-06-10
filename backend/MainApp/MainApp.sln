@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp.Api", " MainApp\MainApp.Api.csproj", "{0B558763-7485-490A-9554-376B6AD2F21B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp.Api", "MainApp\MainApp.Api.csproj", "{0B558763-7485-490A-9554-376B6AD2F21B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{656DDC6B-93B5-4508-ACD6-E299726C9239}"
 EndProject
