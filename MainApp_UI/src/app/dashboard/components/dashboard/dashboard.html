@@ -1,0 +1,11 @@
+<p>userID: {{ userId() }}</p>
+<p>userEmail: {{ userEmail() }}</p>
+<p>is 2FA enabled: {{ is2FAEnabled() }}</p>
+
+<button (click)="loadData()">
+	<p>Load More Data</p>
+</button>
+
+<button (click)="logout()">
+	<p>Logout</p>
+</button>

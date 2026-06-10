@@ -1,0 +1,14 @@
+<div class="credentials-container">
+	<p>Login</p>
+	<input #loginInput (input)="email.set(loginInput.value)" />
+	<p>Password</p>
+	<input #passwordInput (input)="password.set(passwordInput.value)" />
+	<br />
+	<button (click)="register()">
+		<p>Login</p>
+	</button>
+	<br />
+	<button (click)="navigateToLogin()">
+		<p>Navigate to login</p>
+	</button>
+</div>

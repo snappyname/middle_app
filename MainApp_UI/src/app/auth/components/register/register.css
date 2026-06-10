@@ -1,0 +1,10 @@
+:host {
+	display: flex;
+	flex-direction: column;
+}
+
+.credentials-container {
+	width: 200px;
+	display: grid;
+	justify-content: center;
+}

@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.credentials-container {
+  width: 200px;
+  display: grid;
+  justify-content: center;
+  border: 1px red solid;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
