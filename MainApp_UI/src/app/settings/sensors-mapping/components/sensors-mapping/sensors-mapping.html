@@ -1,0 +1,103 @@
+<mat-drawer-container autosize>
+	<mat-drawer #drawer>
+		<app-settings-sidenav></app-settings-sidenav>
+	</mat-drawer>
+
+	<div class="main">
+		<div class="sidenav-settings">
+			<button (click)="drawer.toggle()" matMiniFab>
+				<mat-icon>menu</mat-icon>
+			</button>
+		</div>
+
+		<div>
+			<form (ngSubmit)="submit()" [formGroup]="form" class="add-sensor-container">
+				<p>Add new sensor: </p>
+
+				<mat-form-field>
+					<mat-label>Sensor Id</mat-label>
+					<input formControlName="sensorId" matInput type="number">
+
+					@if (form.get('sensorId')?.hasError('required')) {
+						<mat-error>
+							Sensor Id обязателен
+						</mat-error>
+					}
+
+					@if (form.get('sensorId')?.hasError('pattern')) {
+						<mat-error>
+							Sensor Id должен быть натуральным числом
+						</mat-error>
+					}
+
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Type</mat-label>
+					<mat-select formControlName="sensorType">
+						@for (sensor of sensorsMapping | keyvalue; track sensor.key) {
+							<mat-option [value]="+sensor.key">
+								{{ sensor.value }}
+							</mat-option>
+						}
+					</mat-select>
+					@if (form.get('sensorType')?.hasError('required')) {
+						<mat-error>
+							Выберите значение
+						</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label>Sensor Name</mat-label>
+					<input formControlName="sensorName" matInput>
+					@if (form.get('sensorName')?.hasError('required')) {
+						<mat-error>
+							Sensor Name обязателен
+						</mat-error>
+					}
+				</mat-form-field>
+
+				<button
+					[disabled]="form.invalid"
+					color="primary"
+					mat-raised-button
+					type="submit">
+					Save
+				</button>
+			</form>
+		</div>
+
+		<p class="label">All Sensors</p>
+		<div class="table-container">
+			<table [dataSource]="sensorsMap()" mat-table>
+				<ng-container matColumnDef="sensorTypeName">
+					<th *matHeaderCellDef mat-header-cell> Sensor Type</th>
+					<td *matCellDef="let element" mat-cell> {{ sensorsMapping[element.sensorType] }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="sensorId">
+					<th *matHeaderCellDef mat-header-cell>Sensor Id</th>
+					<td *matCellDef="let element" mat-cell> {{ element.sensorId }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="sensorName">
+					<th *matHeaderCellDef mat-header-cell>Name</th>
+					<td *matCellDef="let element" mat-cell>
+						<div class="sensor-name">
+							<button (click)="openRenameDialog(element)"
+									matMiniFab>
+								<mat-icon>edit</mat-icon>
+							</button>
+							{{ element.sensorName }}
+						</div>
+					</td>
+
+				</ng-container>
+
+				<tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+				<tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+			</table>
+		</div>
+	</div>
+</mat-drawer-container>

@@ -1,7 +1,8 @@
-﻿namespace Application.Services.Abstract;
+﻿namespace Application.Services.Abstract.Auth;
 
 public interface ICurrentUserService
 {
-    public string UserId { get; }
+    public Guid UserId { get; }
     public string Email { get; }
+    public bool IsAdmin { get; }
 }

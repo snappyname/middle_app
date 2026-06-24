@@ -28,7 +28,7 @@ export class Login {
 		this.store
 			.dispatch(new LoginAction(this.email(), this.password()))
 			.pipe(take(1))
-			.subscribe(() => this.store.dispatch(new Navigate([`/${appRoutes.user}`])));
+			.subscribe(() => this.store.dispatch(new Navigate([`/${appRoutes.dashboard}`])));
 	}
 
 	protected navigateToRegister() {

@@ -1,4 +1,5 @@
-﻿using Application.Services.Abstract;
+﻿using Application.Services.Abstract.Auth;
+using Application.Services.Abstract.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

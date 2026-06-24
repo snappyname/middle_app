@@ -1,4 +1,10 @@
 export enum appRoutes {
 	auth = 'auth',
-	user = 'user',
+	dashboard = 'dashboard',
+	settings = 'settings',
+}
+
+export enum settingsRoutes {
+	users = 'users',
+	sensorsMapping = 'mapping',
 }

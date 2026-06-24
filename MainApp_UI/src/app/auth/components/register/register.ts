@@ -4,12 +4,14 @@ import { RegisterAction } from '../../store/auth.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { appRoutes } from '../../../app-routes.const';
 import { authRoutes } from '../../auth-routes.const';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
 	selector: 'app-register',
-	imports: [],
+	imports: [MatFormField, MatInput, MatLabel, MatButton],
 	templateUrl: './register.html',
-	styleUrl: './register.css',
+	styleUrl: './register.scss',
 })
 export class Register {
 	email = signal('');

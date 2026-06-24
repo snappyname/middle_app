@@ -6,10 +6,11 @@ import { Navigate } from '@ngxs/router-plugin';
 import { appRoutes } from '../../../app-routes.const';
 import { authRoutes } from '../../../auth/auth-routes.const';
 import { Logout } from '../../../auth/store/auth.actions';
+import { DashboardHeader } from '../dashboard-header/dashboard-header';
 
 @Component({
 	selector: 'app-dashboard',
-	imports: [],
+	imports: [DashboardHeader],
 	templateUrl: './dashboard.html',
 	styleUrl: './dashboard.css',
 })

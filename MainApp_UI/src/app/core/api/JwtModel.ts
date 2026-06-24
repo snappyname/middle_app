@@ -1,6 +1,7 @@
 export class JwtModel {
 	sub: string;
 	exp: number;
-	userId: string;
-	userEmail: string;
+	user_id: string;
+	email: string;
+	is_admin: string;
 }

@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>New name</h2>
+<mat-dialog-content>
+	<mat-form-field>
+		<mat-label>New name</mat-label>
+		<input [(ngModel)]="data.originalName" matInput>
+	</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-dialog-close matButton>Discard</button>
+	<button (click)="saveNewName()" cdkFocusInitial mat-dialog-close matButton>Save</button>
+</mat-dialog-actions>

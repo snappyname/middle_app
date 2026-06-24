@@ -1,5 +1,8 @@
-﻿namespace Domain;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace Domain;
+
+[Index(nameof(Token), IsUnique = true)]
 public class RefreshToken
 {
     public long Id { get; set; }

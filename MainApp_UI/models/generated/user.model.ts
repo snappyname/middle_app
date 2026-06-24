@@ -1,6 +1,8 @@
 ﻿export class UserModel {
-    id: string;
-    userName: string;
+	id: string;
+	username: string;
+	email: string;
+	isAdmin: boolean;
 
 	constructor(partial?: Partial<UserModel>) {
 		if (partial) {

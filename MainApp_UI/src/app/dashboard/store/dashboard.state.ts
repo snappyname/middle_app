@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DashboardStateModel } from './dashboard.model';
 import { DashboardApiService } from '../dashboard.api.service';
-import { LoadUserDetails, SetUserDetails } from './dashboard.actions';
+import { SetUserDetails } from './dashboard.actions';
 
 @State<DashboardStateModel>({
 	name: 'dashboard',
@@ -34,12 +34,5 @@ export class DashboardState {
 	@Action(SetUserDetails)
 	setUser(ctx: StateContext<DashboardStateModel>, action: SetUserDetails) {
 		ctx.patchState({ userId: action.user.id });
-	}
-
-	@Action(LoadUserDetails)
-	LoadUserDetails(ctx: StateContext<DashboardStateModel>) {
-		this.apiService.getMe().subscribe((x) => {
-			ctx.patchState({ userId: x.id, userEmail: x.userName });
-		});
 	}
 }

@@ -1,34 +1,32 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Application.Extensions;
+﻿using Application.Extensions;
 using Application.RefitClients;
+using Application.Repositories.Abstract;
 using Application.Services.Abstract;
-using Contracts;
 using Contracts.Frontend.Auth;
 using Contracts.Internal.GithubAuth;
-using DAL;
 using Domain;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services;
 
 public class GithubAuthService : IGithubAuthService
 {
-    private readonly AppDbContext _dbContext;
     private readonly IGithubApiClient _githubApiClient;
     private readonly IGithubAuthClient _githubAuthClient;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<Domain.User> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IUserRepository _userRepository;
 
-    public GithubAuthService(UserManager<User> userManager, IConfiguration configuration, AppDbContext context, IGithubApiClient githubApiClient, IGithubAuthClient githubAuthClient)
+    public GithubAuthService(UserManager<Domain.User> userManager, IConfiguration configuration, IGithubApiClient githubApiClient, IGithubAuthClient githubAuthClient, IRefreshTokenRepository refreshTokenRepository, IUserRepository userRepository)
     {
         _userManager = userManager;
         _configuration = configuration;
-        _dbContext = context;
         _githubApiClient = githubApiClient;
         _githubAuthClient = githubAuthClient;
+        _refreshTokenRepository = refreshTokenRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<TokensModel> LoginByGithub(OAuthTokenModel request)
@@ -36,11 +34,10 @@ public class GithubAuthService : IGithubAuthService
         var token = await GetGithubToken(request.IdToken);
         var userLogin = await GetUserLogin(token);
         var email = await GetUserEmail(token);
-        User user = await FindOrCreateGithubUser(userLogin.Id, userLogin.Login, email);
+        Domain.User user = await FindOrCreateGithubUser(userLogin.Id, userLogin.Login, email);
         string accessToken = TokenGenerator.CreateJwtToken(user, _configuration[ConfigurationKeys.JwtKey]!);
-        RefreshToken refreshToken = await TokenGenerator.GenerateRefreshToken(user.Id, _dbContext);
-        await _dbContext.RefreshTokens.AddAsync(refreshToken);
-        await _dbContext.SaveChangesAsync();
+        RefreshToken refreshToken = TokenGenerator.GenerateRefreshToken(user.Id);
+        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
         return new TokensModel { JWTToken = accessToken, RefreshToken = refreshToken.Token };
     }
 
@@ -69,23 +66,22 @@ public class GithubAuthService : IGithubAuthService
         return emails.First(x => x.Primary).Email;
     }
 
-    private async Task<User> FindOrCreateGithubUser(long githubId, string username, string email)
+    private async Task<Domain.User> FindOrCreateGithubUser(long githubId, string username, string email)
     {
-        User? login = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.GithubId == githubId);
+        Domain.User? login = await _userRepository.GetByGithubId(githubId);
         if (login != null)
         {
             return login;
         }
 
-        User? user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        Domain.User? user = await _userRepository.GetByEmail(email);
         if (user != null)
         {
-            user.GithubId = githubId;
-            await _dbContext.SaveChangesAsync();
+            await _userRepository.SetUserGithubId(user, githubId);
             return user;
         }
 
-        User newUser = new() { UserName = username, Email = email, GithubId = githubId, EmailConfirmed = true };
+        Domain.User newUser = new() { UserName = username, Email = email, GithubId = githubId, EmailConfirmed = true };
         await _userManager.CreateAsync(newUser);
         return newUser;
     }

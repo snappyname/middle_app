@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Edit user</h2>
+<mat-dialog-content>
+	<mat-form-field>
+		<mat-label>Favorite Animal</mat-label>
+		<input [(ngModel)]="data.originalName" matInput />
+	</mat-form-field>
+	@if (!data.isCurrentUser) {
+		<mat-checkbox [(ngModel)]="data.isAdmin" disableRipple>
+			Is Admin
+		</mat-checkbox>
+	}
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-dialog-close matButton>Discard</button>
+	<button (click)="saveUser()" cdkFocusInitial mat-dialog-close matButton>Save</button>
+</mat-dialog-actions>

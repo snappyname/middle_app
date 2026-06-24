@@ -15,7 +15,10 @@ public static class TokenGenerator
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id), new Claim(ClaimTypes.Email, user.UserName)
+            new Claim(CustomClaims.UserId, user.Id),
+            new Claim(CustomClaims.UserName, user.UserName),
+            new Claim(CustomClaims.Email, user.Email),
+            new Claim(CustomClaims.IsAdmin, user.IsAdmin.ToString()),
         };
 
         var key = new SymmetricSecurityKey(
@@ -23,25 +26,13 @@ public static class TokenGenerator
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.UtcNow.AddSeconds(60),
+            expires: DateTime.UtcNow.AddMinutes(60),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-    public static async Task<RefreshToken> GenerateRefreshToken(string userId, AppDbContext context)
-    {
-        var token = GenerateRefreshToken(userId);
-
-        while (await context.RefreshTokens.AnyAsync(x => x.Token == token.Token))
-        {
-            token = GenerateRefreshToken(userId);
-        }
-
-        return token;
-    }
-
-    private static RefreshToken GenerateRefreshToken(string userId)
+    
+    public static RefreshToken GenerateRefreshToken(string userId)
     {
         return new RefreshToken
         {

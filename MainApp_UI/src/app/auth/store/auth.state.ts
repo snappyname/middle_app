@@ -1,4 +1,4 @@
-import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { LoadUserFromJWT, LoginAction, LoginWithGithub, LoginWithGoogle, Logout, RegisterAction } from './auth.actions';
 import { AuthStateModel } from './auth.model';
@@ -13,6 +13,7 @@ import { JwtModel } from '../../core/api/JwtModel';
 	defaults: {
 		userId: '',
 		userEmail: '',
+		isUserAdmin: false,
 		isAuthenticated: false,
 	},
 })
@@ -26,6 +27,21 @@ export class AuthState {
 	@Selector()
 	static isAuthenticated(state: AuthStateModel) {
 		return state.isAuthenticated;
+	}
+
+	@Selector()
+	static userEmail(state: AuthStateModel) {
+		return state.userEmail;
+	}
+
+	@Selector()
+	static isAdmin(state: AuthStateModel) {
+		return state.isUserAdmin;
+	}
+
+	@Selector()
+	static userId(state: AuthStateModel) {
+		return state.userId;
 	}
 
 	@Action(LoginAction)
@@ -53,8 +69,9 @@ export class AuthState {
 		if (this.apiService.getToken()) {
 			const payload = jwtDecode<JwtModel>(this.apiService.getToken());
 			ctx.patchState({
-				userEmail: payload.userEmail,
-				userId: payload.userId,
+				userEmail: payload.email,
+				userId: payload.user_id,
+				isUserAdmin: payload.is_admin.toLowerCase() == 'true',
 				isAuthenticated: true,
 			});
 		}

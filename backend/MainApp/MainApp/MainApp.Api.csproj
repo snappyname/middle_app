@@ -8,6 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="KafkaFlow" Version="4.2.0" />
+        <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="4.2.0" />
+        <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="4.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8">
@@ -23,10 +26,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\DAL\DAL.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\Base\" />
     </ItemGroup>
 
 </Project>

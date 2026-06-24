@@ -46,9 +46,62 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Token")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Domain.SensorValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SensorsMapId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SensorsMapId");
+
+                    b.ToTable("SensorValues");
+                });
+
+            modelBuilder.Entity("Domain.SensorsMap", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("SensorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SensorName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("Type", "SensorId")
+                        .IsUnique();
+
+                    b.ToTable("SensorsMap");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -75,6 +128,9 @@ namespace DAL.Migrations
 
                     b.Property<string>("GoogleId")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -264,6 +320,17 @@ namespace DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.SensorValue", b =>
+                {
+                    b.HasOne("Domain.SensorsMap", "SensorsMap")
+                        .WithMany("SensorValues")
+                        .HasForeignKey("SensorsMapId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SensorsMap");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -313,6 +380,11 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.SensorsMap", b =>
+                {
+                    b.Navigation("SensorValues");
                 });
 #pragma warning restore 612, 618
         }

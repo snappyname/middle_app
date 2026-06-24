@@ -1,8 +1,8 @@
-﻿using Domain;
+﻿using Contracts.Frontend.Admin;
 
-namespace Application.Services.Abstract;
+namespace Application.Services.Abstract.User;
 
 public interface IUserService
 {
-    Task<User> GetMe(string userId);
+    Task<UserDTO> GetMe(Guid userId);
 }

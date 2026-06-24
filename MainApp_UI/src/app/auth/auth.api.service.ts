@@ -22,37 +22,25 @@ export class AuthApiService extends RequestHandler {
 	}
 
 	public getTokes(email: string, password: string): Observable<TokensModel> {
-		return this.httpPost<TokensModel, LoginModel>(
-			'/auth/login',
-			new LoginModel({ email: email, password: password }),
-		);
+		return this.httpPost<TokensModel>('/auth/login', new LoginModel({ email: email, password: password }));
 	}
 
 	public register(email: string, password: string): Observable<TokensModel> {
-		return this.httpPost<TokensModel, LoginModel>(
-			'/auth/register',
-			new LoginModel({ email: email, password: password }),
-		);
+		return this.httpPost<TokensModel>('/auth/register', new LoginModel({ email: email, password: password }));
 	}
 
 	public refreshToken(): Observable<TokensModel> {
-		return this.httpPost<TokensModel, RefreshTokenModel>(
+		return this.httpPost<TokensModel>(
 			'/auth/refreshToken',
 			new RefreshTokenModel({ refreshToken: this.getRefreshToken() }),
 		);
 	}
 
 	public loginWithGoogle(token: string): Observable<TokensModel> {
-		return this.httpPost<TokensModel, OAuthTokenModel>(
-			AppConsts.googleAuthRoute,
-			new OAuthTokenModel({ idToken: token }),
-		);
+		return this.httpPost<TokensModel>(AppConsts.googleAuthRoute, new OAuthTokenModel({ idToken: token }));
 	}
 
 	public loginWitGithub(token: string): Observable<TokensModel> {
-		return this.httpPost<TokensModel, OAuthTokenModel>(
-			AppConsts.githubAuthRoute,
-			new OAuthTokenModel({ idToken: token }),
-		);
+		return this.httpPost<TokensModel>(AppConsts.githubAuthRoute, new OAuthTokenModel({ idToken: token }));
 	}
 }

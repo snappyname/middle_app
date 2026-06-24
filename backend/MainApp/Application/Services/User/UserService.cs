@@ -1,20 +1,24 @@
-﻿using Application.Services.Abstract;
-using DAL;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Repositories.Abstract;
+using Application.Services.Abstract;
+using Application.Services.Abstract.User;
+using Contracts.Frontend.Admin;
+using Mapster;
 
-namespace Application.Services;
+namespace Application.Services.User;
 
 public class UserService : IUserService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly IUserRepository _userRepository;
 
-    public UserService(AppDbContext context)
+    public UserService( IUserRepository userRepository)
     {
-        _dbContext = context;
+        _userRepository = userRepository;
     }
 
-    public async Task<Domain.User> GetMe(string userId)
+    public async Task<UserDTO> GetMe(Guid userId)
     {
-        return (await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId))!;
+        var user = await _userRepository.GetById(userId);
+        if(user == null) throw new Exception("User not found");
+        return user.Adapt<UserDTO>();
     }
 }

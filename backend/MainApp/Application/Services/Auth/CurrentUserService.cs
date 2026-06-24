@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
-using Application.Services.Abstract;
+﻿using Application.Services.Abstract.Auth;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
-namespace Application.Services;
+namespace Application.Services.Auth;
 
 public class CurrentUserService : ICurrentUserService
 {
@@ -15,14 +15,15 @@ public class CurrentUserService : ICurrentUserService
 
     private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-    public string UserId
+    public Guid UserId
     {
         get
         {
-            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Guid.TryParse(userId, out var id) ? id.ToString() : throw new Exception("Can't define user");
+            var userId = User?.FindFirstValue(CustomClaims.UserId);
+            return Guid.TryParse(userId, out var id) ? id : throw new Exception("Can't define user");
         }
     }
 
-    public string Email => User?.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+    public string Email => User?.FindFirstValue(CustomClaims.Email) ?? string.Empty;
+    public bool IsAdmin => bool.TryParse(User?.FindFirstValue(CustomClaims.IsAdmin), out var isAdmin) && isAdmin;
 }
