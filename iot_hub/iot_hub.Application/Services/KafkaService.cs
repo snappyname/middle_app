@@ -13,51 +13,56 @@ namespace Application.Services
     public class KafkaService : IKafkaService
     {
         private readonly ILogger<KafkaService> _logger;
-        private readonly IConfiguration _configuration;
+
+        private readonly IProducer<string, string> _producer;
 
         public KafkaService(ILogger<KafkaService> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _configuration = configuration;
+            var config = new ProducerConfig
+            {
+                BootstrapServers = configuration["KafkaUrl"]!,
+                Acks = Acks.All
+            };
+
+            _producer = new ProducerBuilder<string, string>(config).Build();
         }
 
         public async Task SendNewValueAsync<T>(IEnumerable<SensorValue<T>> value)
         {
             var items = value.ToList();
-            if (!items.Any())
+
+            if (items.Count == 0)
             {
                 return;
             }
-            var config = new ProducerConfig { BootstrapServers = _configuration["KafkaUrl"]!, Acks = Acks.All };
-            
-            using var producer = new ProducerBuilder<string, string>(config).Build();
+            var sensorType = items[0].SensorType;
+            if (items.Any(x => x.SensorType != sensorType))
+            {
+                throw new InvalidOperationException("All sensor values must have the same SensorType.");
+            }
 
-            var result = await producer.ProduceAsync(
-                items[0].SensorType.ToString(),
-                new Message<string, string>
-                {
-                    Key = Guid.NewGuid().ToString(),
-                    Value = GetDtoSensorJson(items)
-                });
-            _logger.LogInformation(result.TopicPartitionOffset.ToString());
+            await SendMessageAsync(sensorType.ToString(), GetDtoSensorJson(items));
         }
 
         public async Task SendNewValueAsync<T>(SensorValue<T> value)
         {
-            var config = new ProducerConfig { BootstrapServers = _configuration["KafkaUrl"]!, Acks = Acks.All };
-            
-            using var producer = new ProducerBuilder<string, string>(config).Build();
+            await SendNewValueAsync(new[] { value });
+        }
 
-            var result = await producer.ProduceAsync(
-                value.SensorType.ToString(),
+        private async Task SendMessageAsync(string topic, string payload)
+        {
+            var result = await _producer.ProduceAsync(
+                topic,
                 new Message<string, string>
                 {
                     Key = Guid.NewGuid().ToString(),
-                    Value = GetDtoSensorJson(value)
+                    Value = payload
                 });
-            _logger.LogInformation(result.TopicPartitionOffset.ToString());
-        }
 
+            _logger.LogInformation("Kafka message sent to {TopicPartitionOffset}", result.TopicPartitionOffset);
+        }
+        
         private string GetDtoSensorJson<T>(List<SensorValue<T>> value)
         {
             switch (value[0].SensorType)
@@ -68,22 +73,6 @@ namespace Application.Services
                     return JsonSerializer.Serialize(value.Adapt<List<TemperatureValueDTO>>());
                 case SensorType.SmartDoor:
                     return JsonSerializer.Serialize(value.Adapt<List<SmartDoorValueDTO>>());
-            }
-
-            throw new NotSupportedException(
-                $"Sensor type {value.GetType().Name} is not supported");
-        }
-        
-        private string GetDtoSensorJson<T>(SensorValue<T> value)
-        {
-            switch (value.SensorType)
-            {
-                case SensorType.Humidity:
-                    return JsonSerializer.Serialize(value.Adapt<HumidityValueDTO>());
-                case SensorType.Temperature:
-                    return JsonSerializer.Serialize(value.Adapt<TemperatureValueDTO>());
-                case SensorType.SmartDoor:
-                    return JsonSerializer.Serialize(value.Adapt<SmartDoorValueDTO>());
             }
 
             throw new NotSupportedException(

@@ -1,29 +1,34 @@
 ﻿using Application.ApiClients.Abstractions;
 using Application.Services.Abstract;
+using Contracts.DTO.Input;
 using Coravel.Invocable;
 using Domain;
 using Mapster;
 using System.Text.Json;
 namespace iot_hub.BackgroundJobs;
 
-public class GetHumidityDataJob : IInvocable
+public class GetHumidityDataJob : SensorJob<List<HumidityStatusInputDTO>>
 {
     private readonly IHumiditySensorClient _humiditySensorClient;
     private readonly IKafkaService _kafkaService;
-    private readonly ILogger<GetHumidityDataJob> _logger;
-    
-    public GetHumidityDataJob(IKafkaService kafkaService, IHumiditySensorClient humiditySensorClient, ILogger<GetHumidityDataJob> logger)
+
+    public GetHumidityDataJob(IHumiditySensorClient humiditySensorClient, IKafkaService kafkaService, ILogger<GetHumidityDataJob> logger)
+        : base(logger)
     {
-        _kafkaService = kafkaService;
         _humiditySensorClient = humiditySensorClient;
-        _logger = logger;
+        _kafkaService = kafkaService;
     }
 
-    public async Task Invoke()
+    protected override string JobName => nameof(GetHumidityDataJob);
+
+    protected override Task<List<HumidityStatusInputDTO>> GetDataAsync()
     {
-        var result = await _humiditySensorClient.GetHumidity();
-        _logger.LogInformation($"GetHumidityDataJob result: {JsonSerializer.Serialize(result)}");
-        var sensorsValue = result.Adapt<List<HumidityValue>>();
-        await _kafkaService.SendNewValueAsync(sensorsValue);
+        return _humiditySensorClient.GetHumidity();
+    }
+
+    protected override async Task SendAsync(List<HumidityStatusInputDTO> result)
+    {
+        var sensorValues = result.Adapt<List<HumidityValue>>();
+        await _kafkaService.SendNewValueAsync(sensorValues);
     }
 }

@@ -1,29 +1,33 @@
 ﻿using Application.ApiClients.Abstractions;
 using Application.Services.Abstract;
-using Coravel.Invocable;
+using Contracts.DTO.Input;
 using Domain;
 using Mapster;
-using System.Text.Json;
 
 namespace iot_hub.BackgroundJobs;
 
-public class GetDoorDataJob : IInvocable
+public class GetDoorDataJob : SensorJob<SmartDootInputStateDTO>
 {
     private readonly IDoorSensorsClient _doorSensorsClient;
     private readonly IKafkaService _kafkaService;
-    private readonly ILogger<GetDoorDataJob> _logger;
-    public GetDoorDataJob(IKafkaService kafkaService, IDoorSensorsClient doorSensorsClient, ILogger<GetDoorDataJob> logger)
+
+    public GetDoorDataJob(IKafkaService kafkaService, ILogger<GetDoorDataJob> logger, IDoorSensorsClient doorSensorsClient)
+        : base(logger)
     {
-        _kafkaService = kafkaService;
         _doorSensorsClient = doorSensorsClient;
-        _logger = logger;
+        _kafkaService = kafkaService;
     }
 
-    public async Task Invoke()
+    protected override string JobName => nameof(GetDoorDataJob);
+    
+    protected override Task<SmartDootInputStateDTO> GetDataAsync()
     {
-        var result = await _doorSensorsClient.GetDoorStatus();
-        _logger.LogInformation($"GetDoorDataJob result: {JsonSerializer.Serialize(result)}");
-        var sensorValue = result.Adapt<SmartDoorValue>();
-        await _kafkaService.SendNewValueAsync(sensorValue);
+        return _doorSensorsClient.GetDoorStatus();
+    }
+
+    protected override async Task SendAsync(SmartDootInputStateDTO result)
+    {
+        var sensorValues = result.Adapt<SmartDoorValue>();
+        await _kafkaService.SendNewValueAsync(sensorValues);
     }
 }

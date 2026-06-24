@@ -1,30 +1,33 @@
 ﻿using Application.ApiClients.Abstractions;
 using Application.Services.Abstract;
-using Coravel.Invocable;
+using Contracts.DTO.Input;
 using Domain;
 using Mapster;
-using System.Text.Json;
 
 namespace iot_hub.BackgroundJobs;
 
-public class GetTemperatureDataJob : IInvocable
+public class GetTemperatureDataJob : SensorJob<List<TemperatureStatusInputDTO>>
 {
-    private readonly ITemperatureSensorClient _temperatureSensorsClient;
+    private readonly ITemperatureSensorClient _temperatureSensorClient;
     private readonly IKafkaService _kafkaService;
-    private readonly ILogger<GetHumidityDataJob> _logger;
-
-    public GetTemperatureDataJob(ITemperatureSensorClient temperatureSensorsClient, IKafkaService kafkaService, ILogger<GetHumidityDataJob> logger)
+    
+    public GetTemperatureDataJob(ITemperatureSensorClient client, IKafkaService kafkaService, ILogger<GetTemperatureDataJob> logger)
+        : base(logger)
     {
-        _temperatureSensorsClient = temperatureSensorsClient;
+        _temperatureSensorClient = client;
         _kafkaService = kafkaService;
-        _logger = logger;
+    }
+    
+    protected override string JobName => nameof(GetTemperatureDataJob);
+
+    protected override Task<List<TemperatureStatusInputDTO>> GetDataAsync()
+    {
+        return _temperatureSensorClient.GetTemperature();
     }
 
-    public async Task Invoke()
+    protected override async Task SendAsync(List<TemperatureStatusInputDTO> result)
     {
-        var result = await _temperatureSensorsClient.GetTemperature();
-        _logger.LogInformation($"GetTemperatureDataJob result: {JsonSerializer.Serialize(result)}");
-        var sensorValue = result.Adapt<List<TemperatureValue>>();
-        await _kafkaService.SendNewValueAsync(sensorValue);
+        var sensorValues = result.Adapt<List<TemperatureValue>>();
+        await _kafkaService.SendNewValueAsync(sensorValues);
     }
 }
