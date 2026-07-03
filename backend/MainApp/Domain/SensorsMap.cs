@@ -12,4 +12,5 @@ public class SensorsMap
     public long SensorId { get; set; }
     public string SensorName { get; set; }
     public ICollection<SensorValue> SensorValues { get; set; } = new List<SensorValue>();
+    public ICollection<User> Users { get; set; } = new List<User>();
 }

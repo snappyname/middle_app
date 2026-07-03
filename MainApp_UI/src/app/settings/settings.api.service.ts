@@ -30,4 +30,8 @@ export class SettingsApiService extends RequestHandler {
 	public updateUser(userId: string, userName: string, isAdmin: boolean) {
 		return this.httpPost('/admin/updateUser', {}, { userId: userId, userName: userName, isAdmin: isAdmin });
 	}
+
+	public updateUserSensors(sensors: SensorModel[]) {
+		return this.httpPost('/admin/assignSensors', sensors);
+	}
 }

@@ -1,6 +1,4 @@
-﻿using Application.Services.Abstract;
-using Application.Services.Abstract.Auth;
-using Contracts;
+﻿using Application.Services.Abstract.Auth;
 using Contracts.Frontend.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,28 +19,28 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginModel loginModel)
+    public async Task<IActionResult> Login(LoginModel loginModel, CancellationToken cancellationToken)
     {
-        return Ok(await _emailAuthService.Login(loginModel.Email, loginModel.Password));
+        return Ok(await _emailAuthService.Login(loginModel.Email, loginModel.Password, cancellationToken));
     }
 
     [HttpPost("refreshToken")]
-    public async Task<IActionResult> RefreshToken(RefreshTokenModel refreshTokenModel)
+    public async Task<IActionResult> RefreshToken(RefreshTokenModel refreshTokenModel, CancellationToken cancellationToken)
     {
-        return Ok(await _emailAuthService.RefreshToken(refreshTokenModel.RefreshToken));
+        return Ok(await _emailAuthService.RefreshToken(refreshTokenModel.RefreshToken, cancellationToken));
     }
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterModel registerModel)
+    public async Task<IActionResult> Register(RegisterModel registerModel, CancellationToken cancellationToken)
     {
-        return Ok(await _emailAuthService.Register(registerModel));
+        return Ok(await _emailAuthService.Register(registerModel, cancellationToken));
     }
     
     [AllowAnonymous]
     [HttpPost("github")]
-    public async Task<IActionResult> GithubLogin([FromBody] OAuthTokenModel request)
+    public async Task<IActionResult> GithubLogin([FromBody] OAuthTokenModel request, CancellationToken cancellationToken)
     {
-        return Ok(await _githubAuthService.LoginByGithub(request));
+        return Ok(await _githubAuthService.LoginByGithub(request, cancellationToken));
     }
 }

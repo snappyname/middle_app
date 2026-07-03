@@ -1,5 +1,4 @@
 ﻿using Application.Services.Abstract.Sensors;
-using Contracts.Frontend.Sensors;
 using MainApp.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +19,17 @@ public class SensorsController : ControllerBase
     [Authorize]
     [RequireAdmin]
     [HttpGet("allSensors")]
-    public async Task<IActionResult> GetAllSensorMapping()
+    public async Task<IActionResult> GetAllSensorMapping(CancellationToken cancellationToken)
     {
-        return Ok(await _sensorsService.GetAllSensorMapping());
+        return Ok(await _sensorsService.GetAllSensorMapping(cancellationToken));
     }
     
     [Authorize]
     [RequireAdmin]
     [HttpPost("renameSensor")]
-    public async Task<IActionResult> RenameSensor([FromQuery] Guid mappedSensorId, [FromQuery] string sensorName = "")
+    public async Task<IActionResult> RenameSensor([FromQuery] Guid mappedSensorId, [FromQuery] string sensorName, CancellationToken cancellationToken)
     {
-        await _sensorsService.RenameSensor(mappedSensorId, sensorName);
+        await _sensorsService.RenameSensor(mappedSensorId, sensorName, cancellationToken);
         return Ok();
     }
 }

@@ -42,6 +42,30 @@
 					</td>
 				</ng-container>
 
+				<ng-container matColumnDef="assignSensor">
+					<th *matHeaderCellDef mat-header-cell>Assign Sensors</th>
+					<td *matCellDef="let element" mat-cell>
+						<mat-form-field>
+							<mat-label>Assign sensors</mat-label>
+							<mat-select [formControl]="getControl(element)" multiple>
+								@for (sensorModel of sensorsList(); track sensorModel.mappedSensorId) {
+									<mat-option [value]="sensorModel.mappedSensorId">
+										{{ sensorModel.sensorName }}
+									</mat-option>
+								}
+							</mat-select>
+						</mat-form-field>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="save">
+					<th *matHeaderCellDef mat-header-cell>Save</th>
+					<td *matCellDef="let element" mat-cell>
+						<button (click)="saveUser(element)" matButton="filled">Save</button>
+					</td>
+				</ng-container>
+
+
 				<tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
 				<tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
 			</table>

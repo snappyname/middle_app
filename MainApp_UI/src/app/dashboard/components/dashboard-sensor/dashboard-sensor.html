@@ -1,0 +1,28 @@
+<app-dashboard-header></app-dashboard-header>
+
+<div class="sensor-container">
+	<app-dashboard-chart
+		[sensorData]="sensorValues"
+		[sensor]="sensor">
+	</app-dashboard-chart>
+</div>
+
+<mat-form-field>
+	<mat-label>Enter a date range</mat-label>
+	<mat-date-range-input [rangePicker]="picker">
+		<input [(ngModel)]="startDate" matStartDate placeholder="Start date">
+		<input [(ngModel)]="endDate" matEndDate placeholder="End date">
+	</mat-date-range-input>
+
+	<mat-date-range-picker #picker></mat-date-range-picker>
+	<mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+	<mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width">
+	<mat-label>Sensor values count</mat-label>
+	<input [value]="sensorPointsCount" matInput>
+</mat-form-field>
+
+<button (click)="loadValues()" matButton="filled">Get Values</button>

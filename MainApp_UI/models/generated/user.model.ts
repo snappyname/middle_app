@@ -3,6 +3,7 @@
 	username: string;
 	email: string;
 	isAdmin: boolean;
+	assignedSensors: string[];
 
 	constructor(partial?: Partial<UserModel>) {
 		if (partial) {

@@ -14,16 +14,16 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddRefreshTokenAsync(RefreshToken refreshToken)
+    public async Task AddRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
     {
-        await _dbContext.RefreshTokens.AddAsync(refreshToken); 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken); 
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<RefreshToken?> GetByTokenWithUserAsync(string token)
+    public async Task<RefreshToken?> GetByTokenWithUserAsync(string token, CancellationToken cancellationToken)
     {
         return await _dbContext.RefreshTokens
             .Include(x => x.User)
-            .FirstOrDefaultAsync(x => x.Token == token);
+            .FirstOrDefaultAsync(x => x.Token == token, cancellationToken);
     }
 }

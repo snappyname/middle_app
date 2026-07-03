@@ -1,14 +1,12 @@
 <app-dashboard-header></app-dashboard-header>
 
-
-<p>userID: {{ userId() }}</p>
-<p>userEmail: {{ userEmail() }}</p>
-<p>is 2FA enabled: {{ is2FAEnabled() }}</p>
-
-<button (click)="loadData()">
-	<p>Load More Data</p>
-</button>
-
-<button (click)="logout()">
-	<p>Logout</p>
-</button>
+<div class="charts">
+	@for (sensor of sensorsMap(); track sensor.mappedSensorId) {
+		<div class="chart-container">
+			<button (click)="navigateToSensor(sensor.mappedSensorId)" matButton="filled">Navigate</button>
+			<div class="chart-container">
+				<app-dashboard-chart [sensor]="sensor"></app-dashboard-chart>
+			</div>
+		</div>
+	}
+</div>

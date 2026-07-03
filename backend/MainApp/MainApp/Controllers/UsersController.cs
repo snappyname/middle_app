@@ -20,9 +20,17 @@ public class UsersController : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> GetMe()
+    public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
     {
         var userId = _currentUserService.UserId;
-        return Ok(await _userService.GetMe(userId));
+        return Ok(await _userService.GetMe(userId, cancellationToken));
+    }
+    
+    [Authorize]
+    [HttpGet("my-sensors")]
+    public async Task<IActionResult> GetSensors(CancellationToken cancellationToken)
+    {
+        var userId = _currentUserService.UserId;
+        return Ok(await _userService.GetSensorsAsync(userId, cancellationToken));
     }
 }

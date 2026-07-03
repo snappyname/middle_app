@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="16.4.0-p.12" />
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="16.4.0-p.12" />
         <PackageReference Include="KafkaFlow" Version="4.2.0" />
         <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="4.2.0" />
         <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="4.2.0" />
@@ -26,6 +28,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\DAL\DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Graphql\Handlers\" />
     </ItemGroup>
 
 </Project>

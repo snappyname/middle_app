@@ -1,33 +1,23 @@
 import { Component, inject } from '@angular/core';
+import { DashboardHeader } from '../dashboard-header/dashboard-header';
 import { Store } from '@ngxs/store';
 import { DashboardState } from '../../store/dashboard.state';
-import { LoadUserDetails } from '../../store/dashboard.actions';
+import { DashboardChart } from '../dashboard-chart/dashboard-chart';
+import { MatButton } from '@angular/material/button';
 import { Navigate } from '@ngxs/router-plugin';
 import { appRoutes } from '../../../app-routes.const';
-import { authRoutes } from '../../../auth/auth-routes.const';
-import { Logout } from '../../../auth/store/auth.actions';
-import { DashboardHeader } from '../dashboard-header/dashboard-header';
 
 @Component({
 	selector: 'app-dashboard',
-	imports: [DashboardHeader],
+	imports: [DashboardHeader, DashboardChart, MatButton],
 	templateUrl: './dashboard.html',
-	styleUrl: './dashboard.css',
+	styleUrl: './dashboard.scss',
 })
 export class Dashboard {
 	private store = inject(Store);
+	sensorsMap = this.store.selectSignal(DashboardState.sensorMap);
 
-	public userId = this.store.selectSignal(DashboardState.userId);
-
-	public userEmail = this.store.selectSignal(DashboardState.userEmail);
-
-	public is2FAEnabled = this.store.selectSignal(DashboardState.twoFactorEnabled);
-
-	public loadData() {
-		this.store.dispatch(new LoadUserDetails());
-	}
-
-	public logout() {
-		this.store.dispatch([new Logout(), new Navigate([`${appRoutes.auth}/${authRoutes.login}`])]);
+	protected navigateToSensor(mappedSensorId: string) {
+		this.store.dispatch(new Navigate([appRoutes.dashboard, mappedSensorId]));
 	}
 }

@@ -27,7 +27,7 @@ public class EmailAuthService : IEmailAuthService
         _userRepository = userRepository;
     }
 
-    public async Task<TokensModel> Login(string email, string password)
+    public async Task<TokensModel> Login(string email, string password, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByNameAsync(email);
 
@@ -38,14 +38,14 @@ public class EmailAuthService : IEmailAuthService
 
         var jwtToken = TokenGenerator.CreateJwtToken(user, _configuration[ConfigurationKeys.JwtKey]!);
         var refreshToken = TokenGenerator.GenerateRefreshToken(user.Id);
-        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
+        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken, cancellationToken);
       
         return new TokensModel { JWTToken = jwtToken, RefreshToken = refreshToken.Token };
     }
 
-    public async Task<TokensModel> RefreshToken(string token)
+    public async Task<TokensModel> RefreshToken(string token, CancellationToken cancellationToken)
     {
-        var refreshToken = await _refreshTokenRepository.GetByTokenWithUserAsync(token);
+        var refreshToken = await _refreshTokenRepository.GetByTokenWithUserAsync(token, cancellationToken);
         if (refreshToken == null || refreshToken.IsRevoked)
         {
             throw new RefreshTokenInvalid();
@@ -54,11 +54,11 @@ public class EmailAuthService : IEmailAuthService
         refreshToken.IsRevoked = true;
         var newJwtToken = TokenGenerator.CreateJwtToken(refreshToken.User, _configuration[ConfigurationKeys.JwtKey]!);
         var newRefreshToken =  TokenGenerator.GenerateRefreshToken(refreshToken.UserId);
-        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
+        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken, cancellationToken);
         return new TokensModel { JWTToken = newJwtToken, RefreshToken = newRefreshToken.Token };
     }
 
-    public async Task<TokensModel> Register(RegisterModel model)
+    public async Task<TokensModel> Register(RegisterModel model, CancellationToken cancellationToken)
     {
         if ((await _userRepository.GetAllUsers()).Any(x => x.Email == model.Email))
         {
@@ -67,7 +67,7 @@ public class EmailAuthService : IEmailAuthService
 
         var newUser = new Domain.User { UserName = model.Email, Email = model.Email };
         var result = await _userManager.CreateAsync(newUser, model.Password);
-        if (result.Succeeded) { return await Login(newUser.Email, model.Password); }
+        if (result.Succeeded) { return await Login(newUser.Email, model.Password, cancellationToken); }
 
         throw new PasswordFormatInvalidException();
     }

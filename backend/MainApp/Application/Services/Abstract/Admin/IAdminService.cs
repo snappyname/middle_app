@@ -5,8 +5,9 @@ namespace Application.Services.Abstract.Admin;
 
 public interface IAdminService
 {
-    Task<List<UserDTO>> GetAllUsersAsync();
-    Task<Guid> AddNewSensorAsync(SensorDTO sensor);
-    Task<List<SensorDTO>> GetAllSensorsAsync();
-    Task UpdateUserAsync(Guid id, string name, bool isAdmin = false);
+    Task<List<UserDTO>> GetAllUsersWithSensorsAsync(CancellationToken cancellationToken =  default);
+    Task<Guid> AddNewSensorAsync(SensorDTO sensor, CancellationToken cancellationToken =  default);
+    Task<List<SensorDTO>> GetAllSensorsAsync(CancellationToken cancellationToken =  default);
+    Task UpdateUserAsync(Guid id, string name, bool isAdmin = false, CancellationToken cancellationToken =  default);
+    Task UpdateUserSensorsAsync(List<SensorDTO> sensorValues, CancellationToken cancellationToken =  default);
 }

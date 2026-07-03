@@ -1,6 +1,9 @@
-using Application.MappingProfiles;
+using Application.SignalR;
 using KafkaFlow;
+using MainApp.Controllers;
+using MainApp.Graphql;
 using MainApp.Helpers;
+using MainApp.SignalR;
 using Mapster;
 using Microsoft.AspNetCore.HttpOverrides;
 
@@ -18,6 +21,9 @@ builder.Services.AddScopedServices();
 builder.Services.AddSingletonServices();
 builder.Services.AddMemoryCache();
 
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IRealtimeNotifier, SignalRNotifier>();
+
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddIdentityServices();
 
@@ -26,6 +32,11 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddFrontendCors(builder.Configuration);
 builder.Services.AddForwardedHeadersSupport();
+
+builder.Services
+    .AddGraphQLServer()
+    .AddAuthorization()
+    .AddQueryType<Query>();
 
 TypeAdapterConfig.GlobalSettings.Scan(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -38,9 +49,10 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseForwardedHeaders();
 
 app.UseCors("Frontend");
-
+app.MapGraphQL();
 app.ApplyMigrations();
 var bus = app.Services.CreateKafkaBus();
 await bus.StartAsync();
+app.MapHub<SensorHub>("/hub/sensors");
 app.ConfigurePipeline();
 app.Run();

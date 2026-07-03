@@ -18,6 +18,8 @@ public class UserMappingProfiles : IRegister
             .Map(dest => dest.IsAdmin, src => src.IsAdmin)
             .Map(dest => dest.Email, src => src.Email)
             .Map(dest => dest.Username, src => src.UserName)
-            .Map(dest => dest.Id, src => src.Id);
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.AssignedSensors, src => src.Sensors.Select(x=> x.Id));
+
     }
 }

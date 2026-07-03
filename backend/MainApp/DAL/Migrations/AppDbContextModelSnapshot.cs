@@ -309,6 +309,21 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SensorsMapUser", b =>
+                {
+                    b.Property<Guid>("SensorsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("text");
+
+                    b.HasKey("SensorsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("SensorsMapUser");
+                });
+
             modelBuilder.Entity("Domain.RefreshToken", b =>
                 {
                     b.HasOne("Domain.User", "User")
@@ -378,6 +393,21 @@ namespace DAL.Migrations
                     b.HasOne("Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SensorsMapUser", b =>
+                {
+                    b.HasOne("Domain.SensorsMap", null)
+                        .WithMany()
+                        .HasForeignKey("SensorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

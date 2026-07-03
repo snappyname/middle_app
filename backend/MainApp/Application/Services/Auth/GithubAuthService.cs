@@ -2,6 +2,7 @@
 using Application.RefitClients;
 using Application.Repositories.Abstract;
 using Application.Services.Abstract;
+using Application.Services.Abstract.Auth;
 using Contracts.Frontend.Auth;
 using Contracts.Internal.GithubAuth;
 using Domain;
@@ -29,19 +30,19 @@ public class GithubAuthService : IGithubAuthService
         _userRepository = userRepository;
     }
 
-    public async Task<TokensModel> LoginByGithub(OAuthTokenModel request)
+    public async Task<TokensModel> LoginByGithub(OAuthTokenModel request, CancellationToken cancellationToken)
     {
-        var token = await GetGithubToken(request.IdToken);
-        var userLogin = await GetUserLogin(token);
-        var email = await GetUserEmail(token);
-        Domain.User user = await FindOrCreateGithubUser(userLogin.Id, userLogin.Login, email);
+        var token = await GetGithubToken(request.IdToken, cancellationToken);
+        var userLogin = await GetUserLogin(token, cancellationToken);
+        var email = await GetUserEmail(token, cancellationToken);
+        Domain.User user = await FindOrCreateGithubUser(userLogin.Id, userLogin.Login, email, cancellationToken);
         string accessToken = TokenGenerator.CreateJwtToken(user, _configuration[ConfigurationKeys.JwtKey]!);
         RefreshToken refreshToken = TokenGenerator.GenerateRefreshToken(user.Id);
-        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
+        await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken, cancellationToken);
         return new TokensModel { JWTToken = accessToken, RefreshToken = refreshToken.Token };
     }
 
-    private async Task<string> GetGithubToken(string code)
+    private async Task<string> GetGithubToken(string code, CancellationToken cancellationToken)
     {
         var tokenResponse = await _githubAuthClient.GetAccessTokenAsync(
             new GithubTokenRequestModel
@@ -50,34 +51,34 @@ public class GithubAuthService : IGithubAuthService
                 ClientSecret = _configuration[ConfigurationKeys.GithubClientSecret]!,
                 Code = code,
                 RedirectUri = _configuration[ConfigurationKeys.GithubRedirectUrl]!
-            });
+            }, cancellationToken);
 
         return tokenResponse.AccessToken;
     }
 
-    private async Task<GithubUserResponse> GetUserLogin(string token)
+    private async Task<GithubUserResponse> GetUserLogin(string token, CancellationToken cancellationToken)
     {
-        return await _githubApiClient.GetUserAsync($"Bearer {token}", _configuration[ConfigurationKeys.GithubAppName]!);
+        return await _githubApiClient.GetUserAsync($"Bearer {token}", _configuration[ConfigurationKeys.GithubAppName]!, cancellationToken);
     }
 
-    private async Task<string> GetUserEmail(string token)
+    private async Task<string> GetUserEmail(string token, CancellationToken cancellationToken)
     {
-        var emails = await _githubApiClient.GetEmailsAsync($"Bearer {token}");
+        var emails = await _githubApiClient.GetEmailsAsync($"Bearer {token}", cancellationToken);
         return emails.First(x => x.Primary).Email;
     }
 
-    private async Task<Domain.User> FindOrCreateGithubUser(long githubId, string username, string email)
+    private async Task<Domain.User> FindOrCreateGithubUser(long githubId, string username, string email, CancellationToken cancellationToken)
     {
-        Domain.User? login = await _userRepository.GetByGithubId(githubId);
+        Domain.User? login = await _userRepository.GetByGithubId(githubId, cancellationToken);
         if (login != null)
         {
             return login;
         }
 
-        Domain.User? user = await _userRepository.GetByEmail(email);
+        Domain.User? user = await _userRepository.GetByEmail(email, cancellationToken);
         if (user != null)
         {
-            await _userRepository.SetUserGithubId(user, githubId);
+            await _userRepository.SetUserGithubId(user, githubId, cancellationToken);
             return user;
         }
 

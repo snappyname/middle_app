@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { UsersListModel } from './users-list.model';
 import { SettingsApiService } from '../../settings.api.service';
-import { LoadAllUsers, UpdateUser } from './users-list.actions';
+import { LoadAllUsers, UpdateUser, UpdateUserSensors } from './users-list.actions';
 import { tap } from 'rxjs';
 
 @State<UsersListModel>({
@@ -43,5 +43,10 @@ export class UsersListState {
 				});
 			}),
 		);
+	}
+
+	@Action(UpdateUserSensors)
+	updateUserSensors(ctx: StateContext<UsersListModel>, action: UpdateUserSensors) {
+		return this.apiService.updateUserSensors(action.sensors).pipe().subscribe();
 	}
 }

@@ -7,6 +7,7 @@ import { tap } from 'rxjs';
 import { TokensModel } from '../../../../models/generated/tokens.model';
 import { jwtDecode } from 'jwt-decode';
 import { JwtModel } from '../../core/api/JwtModel';
+import { SignalRService } from '../../core/signalR/signal-r.service';
 
 @State<AuthStateModel>({
 	name: 'auth',
@@ -22,6 +23,7 @@ export class AuthState {
 	constructor(
 		private apiService: AuthApiService,
 		private store: Store,
+		private signalR: SignalRService,
 	) {}
 
 	@Selector()
@@ -74,6 +76,7 @@ export class AuthState {
 				isUserAdmin: payload.is_admin.toLowerCase() == 'true',
 				isAuthenticated: true,
 			});
+			this.signalR.start();
 		}
 	}
 

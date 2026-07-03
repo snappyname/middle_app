@@ -1,5 +1,7 @@
+import { SensorModel } from '../../../../models/generated/sensor.model';
+import { SensorValueNotificationModel } from '../../../../models/generated/sensor-value-notification.model';
+
 export interface DashboardStateModel {
-	userId: string;
-	userEmail: string;
-	twoFactorEnabled: boolean;
+	sensorsMap: SensorModel[] | null;
+	sensorValues: SensorValueNotificationModel[];
 }

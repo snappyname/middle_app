@@ -2,14 +2,14 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DashboardStateModel } from './dashboard.model';
 import { DashboardApiService } from '../dashboard.api.service';
-import { SetUserDetails } from './dashboard.actions';
+import { AddNewSensorValue, LoadStatisticsSensorValues, LoadUserSensorsMapping } from './dashboard.actions';
+import { tap } from 'rxjs';
 
 @State<DashboardStateModel>({
 	name: 'dashboard',
 	defaults: {
-		userId: '',
-		userEmail: '',
-		twoFactorEnabled: false,
+		sensorsMap: null,
+		sensorValues: [],
 	},
 })
 @Injectable()
@@ -17,22 +17,45 @@ export class DashboardState {
 	constructor(private apiService: DashboardApiService) {}
 
 	@Selector()
-	static userId(state: DashboardStateModel) {
-		return state.userId;
+	static sensorMap(state: DashboardStateModel) {
+		return state.sensorsMap;
 	}
 
 	@Selector()
-	static userEmail(state: DashboardStateModel) {
-		return state.userEmail;
+	static sensorValues(state: DashboardStateModel) {
+		return state.sensorValues;
 	}
 
-	@Selector()
-	static twoFactorEnabled(state: DashboardStateModel) {
-		return state.twoFactorEnabled;
+	@Action(AddNewSensorValue)
+	addNewSensorValue(ctx: StateContext<DashboardStateModel>, action: AddNewSensorValue) {
+		ctx.patchState({
+			sensorValues: [...ctx.getState().sensorValues, ...action.sensorValue],
+		});
 	}
 
-	@Action(SetUserDetails)
-	setUser(ctx: StateContext<DashboardStateModel>, action: SetUserDetails) {
-		ctx.patchState({ userId: action.user.id });
+	@Action(LoadUserSensorsMapping)
+	loadUserSensorsMapping(ctx: StateContext<DashboardStateModel>, action: LoadUserSensorsMapping) {
+		this.apiService
+			.getUserSensors()
+			.pipe(
+				tap((x) =>
+					ctx.patchState({
+						sensorsMap: x.flat(),
+					}),
+				),
+			)
+			.subscribe();
+	}
+
+	@Action(LoadStatisticsSensorValues)
+	loadStatisticsSensorValues(ctx: StateContext<DashboardStateModel>, action: LoadStatisticsSensorValues) {
+		this.apiService
+			.getSensorValues(action.mappedSensorId, action.startTime, action.endTime, action.count)
+			.pipe(
+				tap((x) => {
+					console.error(x);
+				}),
+			)
+			.subscribe();
 	}
 }

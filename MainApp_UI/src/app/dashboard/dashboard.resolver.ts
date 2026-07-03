@@ -1,13 +1,20 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
-import { DashboardApiService } from './dashboard.api.service';
 import { Store } from '@ngxs/store';
-import { tap } from 'rxjs';
-import { SetUserDetails } from './store/dashboard.actions';
-import { UserModel } from '../../../models/generated/user.model';
+import { LoadUserSensorsMapping } from './store/dashboard.actions';
+import { DashboardState } from './store/dashboard.state';
+import { filter, take } from 'rxjs/operators';
+import { SensorModel } from '../../../models/generated/sensor.model';
 
-export const userResolver: ResolveFn<UserModel> = () => {
-	const dashboardApi = inject(DashboardApiService);
+export const DashboardResolver: ResolveFn<SensorModel[]> = () => {
 	const store = inject(Store);
-	return dashboardApi.getMe().pipe(tap((user) => store.dispatch(new SetUserDetails(user))));
+
+	if (store.selectSnapshot(DashboardState.sensorMap) === null) {
+		store.dispatch(new LoadUserSensorsMapping());
+	}
+
+	return store.select(DashboardState.sensorMap).pipe(
+		filter((sensorMap) => sensorMap !== null),
+		take(1),
+	);
 };

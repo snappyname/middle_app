@@ -1,9 +1,8 @@
-﻿using Contracts;
-using Contracts.Frontend.Auth;
+﻿using Contracts.Frontend.Auth;
 
-namespace Application.Services.Abstract;
+namespace Application.Services.Abstract.Auth;
 
 public interface IGithubAuthService
 {
-    Task<TokensModel> LoginByGithub(OAuthTokenModel request);
+    Task<TokensModel> LoginByGithub(OAuthTokenModel request, CancellationToken cancellationToken = default);
 }

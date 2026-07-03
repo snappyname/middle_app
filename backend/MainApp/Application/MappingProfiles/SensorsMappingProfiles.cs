@@ -1,4 +1,5 @@
 ﻿using Contracts.Frontend.Sensors;
+using Contracts.Frontend.SignalR;
 using Domain;
 using Mapster;
 
@@ -19,5 +20,15 @@ public class SensorsMappingProfiles : IRegister
             .Map(dest => dest.SensorType, src => src.Type)
             .Map(dest => dest.MappedSensorId, src => src.Id)
             .Map(dest => dest.SensorId, src => src.SensorId);
+
+        config.NewConfig<SensorValue, SensorValueDTO>()
+            .Map(dest => dest.Timestamp, src => src.Timestamp)
+            .Map(dest => dest.SensorId, src => src.SensorsMapId)
+            .Map(dest => dest.Value, src => src.Value);    
+        
+        config.NewConfig<SensorValueDTO, SensorValue>()
+            .Map(dest => dest.Timestamp, src => src.Timestamp)
+            .Map(dest => dest.SensorsMapId, src => src.SensorId)
+            .Map(dest => dest.Value, src => src.Value);
     }
 }
