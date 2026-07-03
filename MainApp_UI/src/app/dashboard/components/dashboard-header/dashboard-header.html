@@ -1,0 +1,7 @@
+<p class="login-info">You logged as: {{ userEmail }}</p>
+@if (isUserAdmin) {
+	<button (click)="goToSettings()"
+			matFab>
+		<mat-icon>settings</mat-icon>
+	</button>
+}

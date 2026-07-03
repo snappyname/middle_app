@@ -1,0 +1,7 @@
+<div class="sidenav-container">
+	<button (click)="goToUsers()" [disabled]="currentPath === settingRoutes.users" matButton="filled">Users List
+	</button>
+	<button (click)="goToSensorsMapping()" [disabled]="currentPath === settingRoutes.sensorsMapping" matButton="filled">
+		Sensors Mapping
+	</button>
+</div>

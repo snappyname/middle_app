@@ -1,0 +1,39 @@
+<div class="credentials-container">
+	<mat-form-field class="example-full-width">
+		<mat-label>Login</mat-label>
+		<input matInput value="" />
+	</mat-form-field>
+
+	<mat-form-field class="example-full-width">
+		<mat-label>Password</mat-label>
+		<input matInput value="" />
+	</mat-form-field>
+	<div class="buttons-container">
+		<button
+			(click)="login()"
+			matButton="filled">
+			Login
+			<mat-icon aria-hidden="false" fontIcon="login"></mat-icon>
+		</button>
+
+		<button
+			(click)="loginByGoogle()"
+			matButton="filled">
+			<i class="fab fa-google"></i>
+			Login by Google
+		</button>
+
+		<button
+			(click)="loginByGithub()"
+			matButton="filled">
+			<i class="fa-brands fa-github"></i>
+			Login by GitHub
+		</button>
+	</div>
+	<br />
+	<button
+		(click)="navigateToRegister()"
+		matButton="tonal">
+		Navigate to register
+	</button>
+</div>

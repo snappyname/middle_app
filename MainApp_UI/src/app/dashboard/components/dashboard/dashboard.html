@@ -1,0 +1,12 @@
+<app-dashboard-header></app-dashboard-header>
+
+<div class="charts">
+	@for (sensor of sensorsMap(); track sensor.mappedSensorId) {
+		<div class="chart-container">
+			<button (click)="navigateToSensor(sensor.mappedSensorId)" matButton="filled">Navigate</button>
+			<div class="chart-container">
+				<app-dashboard-chart [sensor]="sensor"></app-dashboard-chart>
+			</div>
+		</div>
+	}
+</div>

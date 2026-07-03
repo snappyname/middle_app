@@ -1,0 +1,11 @@
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  width: 600px;
+}

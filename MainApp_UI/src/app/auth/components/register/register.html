@@ -1,0 +1,25 @@
+<div class="credentials-container">
+	<mat-form-field>
+		<mat-label>Login</mat-label>
+		<input #loginInput (input)="email.set(loginInput.value)" matInput />
+	</mat-form-field>
+
+	<mat-form-field>
+		<mat-label>Password</mat-label>
+		<input #passwordInput (input)="password.set(passwordInput.value)" matInput />
+	</mat-form-field>
+	<br />
+	<div class="buttons-container">
+		<button
+			(click)="register()"
+			matButton="filled">
+			Create Account
+		</button>
+
+		<button
+			(click)="navigateToLogin()"
+			matButton="filled">
+			Navigate to login
+		</button>
+	</div>
+</div>

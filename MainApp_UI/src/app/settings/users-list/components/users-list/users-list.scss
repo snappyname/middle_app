@@ -1,0 +1,48 @@
+.mat-drawer-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--surface-secondary);
+}
+
+table {
+  background: var(--surface-secondary);
+}
+
+.sidenav-settings {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding-top: 10px;
+}
+
+.label {
+  width: 95%;
+  text-align: left;
+  font-size: 25px;
+}
+
+.table-container {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding-top: 20px;
+
+  button {
+    width: 70%;
+  }
+}
