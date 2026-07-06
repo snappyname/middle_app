@@ -4,5 +4,5 @@ namespace Application.Services.Abstractions;
 
 public interface IHumidityService
 {
-    HumidityValueDTO GetHumidity();
+    List<HumidityValueDTO> GetHumidity();
 }

@@ -1,22 +1,41 @@
-﻿using Application.Services.Abstractions;
+﻿using Application.Repositories.Abstractions;
+using Application.Services.Abstractions;
 using Contracts.DTO;
 
 namespace Application.Services;
 
 public class TemperatureService : ITemperatureService
 {
-    private readonly Random _random;
+    private readonly ISensorRepository _sensorRepository;
 
-    public TemperatureService()
+    public TemperatureService(ISensorRepository sensorRepository)
     {
-        _random = new Random();
+        _sensorRepository = sensorRepository;
     }
 
-    public TemperatureValueDTO GetTemperature()
+    public List<TemperatureValueDTO> GetTemperature()
     {
-        return new TemperatureValueDTO
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return new List<TemperatureValueDTO>
         {
-            Value = _random.Next(15, 32), Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            new TemperatureValueDTO
+            {
+                SensorId = 0,
+                Value = _sensorRepository.GetSensorValue(0),
+                Timestamp = timestamp
+            },
+            new TemperatureValueDTO
+            {
+                SensorId = 1,
+                Value = _sensorRepository.GetSensorValue(1),
+                Timestamp = timestamp
+            },
+            new TemperatureValueDTO
+            {
+                SensorId = 2,
+                Value = _sensorRepository.GetSensorValue(2),
+                Timestamp = timestamp
+            }
         };
     }
 }
