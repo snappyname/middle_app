@@ -2,7 +2,9 @@
 using Application.Services.Abstract;
 using Contracts.DTO.Input;
 using Domain;
+using iot_hub.Configurations;
 using Mapster;
+using Microsoft.Extensions.Options;
 
 namespace iot_hub.BackgroundJobs;
 
@@ -11,8 +13,8 @@ public class GetTemperatureDataJob : SensorJob<List<TemperatureStatusInputDTO>>
     private readonly ITemperatureSensorClient _temperatureSensorClient;
     private readonly IKafkaService _kafkaService;
     
-    public GetTemperatureDataJob(ITemperatureSensorClient client, IKafkaService kafkaService, ILogger<GetTemperatureDataJob> logger)
-        : base(logger)
+    public GetTemperatureDataJob(ITemperatureSensorClient client, IKafkaService kafkaService, ILogger<GetTemperatureDataJob> logger, IOptions<AppSettings> appSettings)
+        : base(logger, appSettings)
     {
         _temperatureSensorClient = client;
         _kafkaService = kafkaService;
@@ -20,9 +22,9 @@ public class GetTemperatureDataJob : SensorJob<List<TemperatureStatusInputDTO>>
     
     protected override string JobName => nameof(GetTemperatureDataJob);
 
-    protected override Task<List<TemperatureStatusInputDTO>> GetDataAsync()
+    protected override Task<List<TemperatureStatusInputDTO>> GetDataAsync(CancellationToken cancellationToken = default)
     {
-        return _temperatureSensorClient.GetTemperature();
+        return _temperatureSensorClient.GetTemperature(cancellationToken);
     }
 
     protected override async Task SendAsync(List<TemperatureStatusInputDTO> result)

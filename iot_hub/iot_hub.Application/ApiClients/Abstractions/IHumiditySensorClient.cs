@@ -6,6 +6,6 @@ namespace Application.ApiClients.Abstractions
     public interface IHumiditySensorClient
     {
         [Get("/Humidity")]
-        Task<List<HumidityStatusInputDTO>> GetHumidity();
+        Task<List<HumidityStatusInputDTO>> GetHumidity(CancellationToken cancellationToken = default);
     }
 }

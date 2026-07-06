@@ -2,6 +2,7 @@
 using Application.Services;
 using Application.Services.Abstract;
 using iot_hub.BackgroundJobs;
+using iot_hub.Configurations;
 using Refit;
 
 namespace iot_hub.Extensions;
@@ -10,12 +11,17 @@ public static class ServiceCollectionExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddDIServices()
+        public IServiceCollection AddDIServices(IConfiguration configuration)
         {
-            services.AddTransient<GetDoorDataJob>();
-            services.AddTransient<GetTemperatureDataJob>();
-            services.AddTransient<GetHumidityDataJob>();
-            services.AddTransient<IKafkaService, KafkaService>();
+            services.AddScoped<GetDoorDataJob>();
+            services.AddScoped<GetTemperatureDataJob>();
+            services.AddScoped<GetHumidityDataJob>();
+            services.AddSingleton<IKafkaService, KafkaService>();
+            
+            services.Configure<SensorsApiSettings>(
+                configuration.GetSection("SensorsApi"));
+            
+            services.Configure<AppSettings>(configuration);
             return services;
         }
 

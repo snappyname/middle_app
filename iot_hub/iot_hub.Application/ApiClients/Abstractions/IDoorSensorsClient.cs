@@ -7,6 +7,6 @@ namespace Application.ApiClients.Abstractions
     public interface IDoorSensorsClient
     {
         [Get("/SmartDoor")]
-        Task<SmartDootInputStateDTO> GetDoorStatus();
+        Task<SmartDootInputStateDTO> GetDoorStatus(CancellationToken cancellationToken = default);
     }
 }

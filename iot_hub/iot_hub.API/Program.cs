@@ -3,7 +3,7 @@ using iot_hub.Extensions;
 using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDIServices();
+builder.Services.AddDIServices(builder.Configuration);
 builder.Services.AddRefitServices(builder.Configuration);
 TypeAdapterConfig.GlobalSettings.Scan(typeof(Program).Assembly);
 builder.Services.AddScheduler();
